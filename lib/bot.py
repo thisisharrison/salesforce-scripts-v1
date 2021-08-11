@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 import requests
 import os
 from pathlib import Path
+from lib.price_utils import getSkus, mergeSort, merge, wildCardDict
 import pdb
 
 
@@ -26,6 +27,9 @@ class SFBot:
             
         # Set implicit wait time
         self.driver.implicitly_wait(5)
+        
+        # Maximize window
+        self.driver.maximize_window()
         
         # Secrets
         self.username = username
@@ -317,3 +321,71 @@ class SFBot:
             """
             self.driver.execute_script(edit_all)
         
+    def navigate_pricebook(self, price_book):
+        url = 'https://staging-eu01-lululemon.demandware.net/on/demandware.store/Sites-Site/default/ViewPriceBook_52-Edit?PriceBookID='
+        url = url + price_book
+        self.driver.get(url)
+        self.driver.find_element(By.LINK_TEXT, "Price Definitions").click() 
+        self.driver.find_element(By.CSS_SELECTOR, "td:nth-child(3) > .perm_not_disabled").click()
+        print(f"Entered {price_book} Price Book Page")
+    
+    def delete_price_wtih_wild_card(self, skuDict):
+        search = self.driver.find_element_by_xpath("//input[@name=\"SearchTerm\"]")
+        search.clear()
+        keys = [*skuDict]
+        total = len(keys)
+        count = 0
+        
+        while keys: 
+            key = keys[0]
+            skus = skuDict[key]            
+            search = self.driver.find_element_by_xpath("//input[@name=\"SearchTerm\"]")
+            search.clear()            
+            searchTerm = str(key) + '*'
+            search.send_keys(searchTerm)
+            self.driver.find_element_by_xpath('//button[@name=\"simpleSearch\"]').click()
+            
+            script = """
+                let a = {};
+                const i = document._getElementsByXPath('//input[@name="sku"]')
+                let found = true;
+                let clicked = 0
+                
+                if (i.length === 0) {{ 
+                        found = false;
+                }} else {{
+                    const ar = Array.from(i);
+            
+                    ar.forEach((el)=> {{
+                        if (a.include(el.defaultValue)) {{
+                                el.click();
+                                clicked += 1;
+                        }}
+                    }})
+                    
+                    if (clicked === 0) {{ found = false; }}
+                }}
+                return found;
+            """.format(skus)
+            
+            event = self.driver.execute_script(script)
+            
+            if (event):
+                deleteButton = self.driver.find_element_by_xpath('//*[@id="deleteButton"]')
+                self.driver.execute_script("arguments[0].click();", deleteButton)
+                confirmDelete = self.driver.find_element_by_xpath('//button[@name=\"deletePrices\"]')   
+                self.driver.execute_script("arguments[0].click();", confirmDelete)
+                print("Deleted: ", skus)
+            else: 
+                print("Sku not found", skus)
+            done = keys.pop(0)
+            count += 1
+            
+            print("{} / {}".format(count, total))
+        
+    def delete_price_book(self, price_book):
+        skus = getSkus()
+        skuSorted = mergeSort(skus)
+        skuDict = wildCardDict(skuSorted)
+        self.navigate_pricebook(price_book)
+        self.delete_price_wtih_wild_card(skuDict)
