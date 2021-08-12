@@ -19,13 +19,14 @@ def display_pricebooks():
         '2': 'EMP-HKD-PROMO',
         '3': '49188-JPY-SALE',
         '4': 'EMP-JPY-PROMO',
-        '5': '59188-AUD-SALE',
-        '6': '55188-NZD-SALE',
-        '7': '60188-GBP-SALE',
-        '8': '64188-EUR-SALE',
-        '9': '65188-EUR-SALE',
-        '10': '66188-EUR-SALE',
-        '11': '66198-CHF-SALE'
+        '5': '44188-KRW-SALE',
+        '6': '59188-AUD-SALE',
+        '7': '55188-NZD-SALE',
+        '8': '60188-GBP-SALE',
+        '9': '64188-EUR-SALE',
+        '10': '65188-EUR-SALE',
+        '11': '66188-EUR-SALE',
+        '12': '66198-CHF-SALE'
     }
     print("Pricebooks: ")
     for k, v in pricebooks.items():

@@ -147,39 +147,47 @@ class SFBot:
         
         pCats = {}
         sCats = {}
-
-        with open (self.category_csv, newline = '', encoding='UTF-8') as csvfile:
+            
+        with open (self.category_csv, newline = '', encoding='UTF-8-sig') as csvfile:
             reader = csv.DictReader(csvfile)
+    
             for row in reader: 
-                try:
-                    """ PERSONAL MAC """
-                    master = row['master']
-                except:
-                    """ OFFICE WINDOWS """
-                    master = row['\ufeffmaster']
-                
+                master = row['master']
                 primary = row['primaryCategory']
                 secondary = [cat.strip() for cat in row['subCategories'].split(',')]
+                navigation = [nav.strip() for nav in row['navigationId'].split(',')]
                 
-                # not primary for this product
+                # no primary for this product
                 if len(primary) < 1:
                     pass
                 else:
                     # add to primary list
                     if primary in pCats.keys():
-                        pCats[primary].add(master)
+                        for nav in navigation:
+                            if nav in pCats[primary].keys():
+                                pCats[primary][nav].add(master)
+                            else: 
+                                pCats[primary][nav] = set([master])
                     else: 
+                        pCats[primary] = {}
                         # remove duplicate masters 
-                        pCats[primary] = set([master])
-                
+                        for nav in navigation:
+                            pCats[primary][nav] = set([master])
+                            
                 for sec in secondary:
                     if len(sec) < 1:
                         continue
                     if sec in sCats.keys():
-                        sCats[sec].add(master)
+                        for nav in navigation:
+                            if nav in sCats[sec].keys():
+                                sCats[sec][nav].add(master)
+                            else:
+                                sCats[sec][nav] = set([master])
                     else:
-                        sCats[sec] = set([master])
-                    
+                        sCats[sec] = {}
+                        for nav in navigation:
+                            sCats[sec][nav] = set([master])
+                        
         print("==========================")
         print("Primary Categories to merchandise: ",pCats)
         print("==========================")
@@ -202,98 +210,141 @@ class SFBot:
                 isPrimary = False
                 job = "Secondary Categorized"
                 
-            try:
-                products = list(primary[category])
-            except: 
-                products = list(secondary[category])
-                
             print("==========================")
             print("Merchandising: ", category)
             print("==========================")
-
-            self.searchProducts(products)
-            
-            self.editAll_ProductTool()
-            
-            print("==========================")
-            print("Found: ", products)
-            print("==========================")
-            
-            self.driver.find_element_by_xpath("//input[@value='AssignProductToCatalogCategory']").click()
-            
-            try:
-                self.driver.find_element_by_xpath('//button[@name=\"selectAction\"]').click()
-            except:
-                script = """document.querySelector("button[name='selectAction']").click()"""
-                self.driver.execute_script(script)
-            
-            try:
-                self.driver.find_element_by_xpath('//*[@id="ext-gen77"]').click()
-            except:
-                script = """"document.querySelector('.x-btn-text.listview_disabled').click()"""
-                self.driver.execute_script(script)                  
                     
             try:
-                search = self.driver.find_element_by_xpath("//input[@name=\"ext-comp-1009\"]").send_keys(category)
-            except:
-                sleep(2)
-                search = self.driver.find_element_by_xpath("//input[@name=\"ext-comp-1009\"]").send_keys(category)
-            
-            print("==========================")
-            print("Categorizing: ", products)
-            print("==========================")
-            
-            try:
-                self.driver.find_element(By.ID, "ext-comp-1009").send_keys(Keys.ENTER)
-                self.driver.find_element(By.CSS_SELECTOR, ".x-grid3-row-checker").click()
-            except:
+                navigations = primary[category]
+            except: 
+                navigations = secondary[category]
+
+            for nav in navigations: 
+                products = list(navigations[nav])
+                
+                self.searchProducts(products)
+                
+                self.editAll_ProductTool()
+                
+                print("==========================")
+                print("Found: ", products)
+                print("==========================")
+                
+                self.driver.find_element_by_xpath("//input[@value='AssignProductToCatalogCategory']").click()
+                
                 try:
+                    self.driver.find_element_by_xpath('//button[@name=\"selectAction\"]').click()
+                except:
+                    script = """document.querySelector("button[name='selectAction']").click()"""
+                    self.driver.execute_script(script)
+                
+                try:
+                    self.driver.find_element_by_xpath('//*[@id="ext-gen77"]').click()
+                except:
+                    script = """"document.querySelector('.x-btn-text.listview_disabled').click()"""
+                    self.driver.execute_script(script)
+                
+                self.driver.execute_script("document.querySelector('.x-form-trigger.x-form-arrow-trigger').click()")
+                
+                sleep(2)
+                
+                select_nav = """
+                const navs = Array.from(document.querySelector('.x-layer.x-combo-list').querySelectorAll('.x-combo-list-item'));
+                for (let nav of navs) {{
+                        if (nav.textContent.toLowerCase().includes('{}'.toLowerCase())) {{
+                                nav.click();
+                                return true;
+                        }}
+                }}
+                return false;
+                """.format(nav)
+                
+                nav_result = self.driver.execute_script(select_nav)
+                if not nav_result:
+                    message = "Navigation ID not found. Search ID and select the checkbox then enter 'y'."
+                    self.helpMeHuman(message)
+                
+                print("==========================")
+                print("Select Nav: ", nav)
+                print("==========================")
+                
+                try:
+                    search = self.driver.find_element_by_xpath("//input[@name=\"ext-comp-1009\"]").send_keys(category)
+                except:
+                    sleep(2)
+                    search = self.driver.find_element_by_xpath("//input[@name=\"ext-comp-1009\"]").send_keys(category)
+                
+                print("==========================")
+                print("Categorizing: ", products)
+                print("==========================")
+                
+                try:
+                    self.driver.find_element(By.ID, "ext-comp-1009").send_keys(Keys.ENTER)
+                except:
                     search = self.driver.find_element_by_xpath('/html/body/table/tbody/tr[2]/td/table/tbody/tr/td/table/tbody/tr/td[2]/form/table[1]/tbody/tr[2]/td[2]/div/div/div/div/div[2]/div/div[1]/div/table/tbody/tr/td[2]/div/span/img[1]')
                     search.click()
-                    self.driver.find_element(By.CSS_SELECTOR, ".x-grid3-row-checker").click()
-                except:
+
+                sleep(2)
+
+                select_cat = """
+                const option = document.querySelector(`[data-automation*="{}"]`);
+                if (!option) {{
+                        return false;
+                }} else {{
+                    option.querySelector('input').click();
+                }}
+                return true;
+                """.format(category)
+                
+                cat_result = self.driver.execute_script(select_cat)
+
+                if not cat_result:
                     message = "Category ID not found. Search ID and select the checkbox then enter 'y'."
                     self.helpMeHuman(message)
-                        
-            try:
-                self.driver.find_element(By.NAME, "selectAction").click()
-            except:
+
+
                 try:
-                    selectAction = """document._getElementsByXPath('//button[@name="selectAction"]')[0].click();
-                    """
-                    self.driver.execute_script(selectAction)
+                    self.driver.find_element(By.NAME, "selectAction").click()
                 except:
-                    message = "This is embarrassing. Press 'Next' for me please! Then enter 'y'."
-                    self.helpMeHuman(message)
-            
-            if isPrimary:
-                dropdown = self.driver.find_element_by_xpath('//select[@name="PrimaryCategoryUUID"]')
-            
-                options = dropdown.find_element_by_xpath("//option[contains(text(), 'lululemon')]")\
-                    .click()
-            
-            try:
-                self.driver.find_element_by_xpath('//button[@name="assignProductsAndReturn"]')\
-                .click()
-            except:
+                    try:
+                        selectAction = """document._getElementsByXPath('//button[@name="selectAction"]')[0].click();
+                        """
+                        self.driver.execute_script(selectAction)
+                    except:
+                        message = "This is embarrassing. Press 'Next' for me please! Then enter 'y'."
+                        self.helpMeHuman(message)
+                
+                if isPrimary:
+                    dropdown = self.driver.find_element_by_xpath('//select[@name="PrimaryCategoryUUID"]')
+                
+                    dropdown.find_element_by_xpath("//option[contains(text(), 'lululemon')]")\
+                        .click()
+                
                 try:
-                    sleep(2)
                     self.driver.find_element_by_xpath('//button[@name="assignProductsAndReturn"]')\
                     .click()
                 except:
-                    assignAction = """document._getElementsByXPath('//button[@name="assignProductsAndReturn"]')[0].click();"""
-                    self.driver.execute_script(assignAction)
+                    try:
+                        sleep(2)
+                        self.driver.find_element_by_xpath('//button[@name="assignProductsAndReturn"]')\
+                        .click()
+                    except:
+                        assignAction = """document._getElementsByXPath('//button[@name="assignProductsAndReturn"]')[0].click();"""
+                        self.driver.execute_script(assignAction)
                 
-                
-            
-            print("==========================")    
-            print("%s: %s > %s" % (job, products, category))
-            print("==========================")
-
+                print("==========================")    
+                print("%s: %s > %s" % (job, products, category))
+                print("==========================")
+    
             try:
                 primary.pop(category)
             except:
                 secondary.pop(category)
+    
+    def assign_primary_secondary_categories(self):
+        mapping = self.getCategories()
+        self.navProducts()
+        self.setCategories(mapping[0], mapping[1])
 
     def helpMeHuman(self, message):
         print("\nHey %s user! I'm in a pickle here...\nCan you help me??" % (self.site))

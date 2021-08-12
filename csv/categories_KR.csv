@@ -1,30 +1,30 @@
-﻿master,primaryCategory,subCategories
-LM3BXES,men-tops-long-sleeves,"all-mens-tops, men-activities-training"
-LM4A95S,men-tops-jacketshoodies,"all-mens-tops, men-activities-otc"
-LM7AQDS,men-bottoms-shorts,"all-mens-bottoms, men-activities-training, men-license-to-train-shop"
-LW1CLRS,women-tops-tanks,"all-womens-tops, women-activities-otc"
-LW1CQCS,women-tops-tanks,"all-womens-tops, women-activities-running, women-swiftly-shop, women-collections-online-only"
-LW2BZVS,women-intimates-sportsbras,"all-womens-tops, women-activities-yoga"
-LW2CM6S,women-intimates-sportsbras,"all-womens-tops, women-activities-training, women-activities-yoga"
-LW3CP4S,women-tops-longsleeves,"all-womens-tops, women-activities-otc"
-LW3CP5S,women-tops-longsleeves,"all-womens-tops, women-activities-otc"
-LW3DQJS,women-tops-longsleeves,"all-womens-tops, women-activities-otc"
-LW5CQ3S,women-bottoms-leggings,all-womens-bottoms
-LW5CTRS,women-bottoms-78pants,"all-womens-bottoms, women-bottoms-leggings, women-activities-running, fabric-nulux-shop-all"
-LW7BGHS,women-bottoms-shorts,"all-womens-bottoms, women-activities-running, fabric-nulux-shop-all"
-LW7BJGS,women-bottoms-shorts,"all-womens-bottoms, women-activities-running, fabric-nulux-shop-all, women-collections-online-only"
-LW9CS8S,women-accessories-scarveswraps,women-activities-running
-LW9CS9S,women-accessories-gloves,women-activities-running
-LW9CT4S,women-accessories-socks,women-activities-otc
-LW9CYLS,women-accessories-hatshairaccessories,women-activities-running
-LW9CYNS,women-accessories-gloves,women-activities-running
-LW9CZ5S,women-accessories-bags,women-activities-otc
-LW9CZ7S,women-accessories-bags,women-activities-otc
-prod10080057,women-bottoms-78pants,"all-womens-bottoms, women-bottoms-leggings, women-activities-running, fabric-nulux-shop-all"
-prod9400153,women-bottoms-shorts,"all-womens-bottoms, women-activities-running, fabric-nulux-shop-all, women-collections-online-only"
-prod9490366,women-tops-longsleeves,"all-womens-tops, women-activities-otc"
-prod9490390,women-accessories-socks,women-activities-otc
-prod9750687,men-tops-long-sleeves,"all-mens-tops, men-activities-training"
-prod9960663,women-accessories-hatshairaccessories,women-activities-otc
-prod9960669,women-accessories-bags,women-activities-otc
-prod9960711,men-tops-jacketshoodies,"all-mens-tops, men-activities-otc"
+﻿master,primaryCategory,subCategories,navigationId
+LM3BXES,men-tops-long-sleeves,"all-mens-tops, men-activities-training",lululemon-kr-navigation
+LM4A95S,men-tops-jacketshoodies,"all-mens-tops, men-activities-otc",lululemon-kr-navigation
+LM7AQDS,men-bottoms-shorts,"all-mens-bottoms, men-activities-training, men-license-to-train-shop",lululemon-kr-navigation
+LW1CLRS,women-tops-tanks,"all-womens-tops, women-activities-otc",lululemon-kr-navigation
+LW1CQCS,women-tops-tanks,"all-womens-tops, women-activities-running, women-swiftly-shop, women-collections-online-only",lululemon-kr-navigation
+LW2BZVS,women-intimates-sportsbras,"all-womens-tops, women-activities-yoga",lululemon-kr-navigation
+LW2CM6S,women-intimates-sportsbras,"all-womens-tops, women-activities-training, women-activities-yoga",lululemon-kr-navigation
+LW3CP4S,women-tops-longsleeves,"all-womens-tops, women-activities-otc",lululemon-kr-navigation
+LW3CP5S,women-tops-longsleeves,"all-womens-tops, women-activities-otc",lululemon-kr-navigation
+LW3DQJS,women-tops-longsleeves,"all-womens-tops, women-activities-otc",lululemon-kr-navigation
+LW5CQ3S,women-bottoms-leggings,all-womens-bottoms,lululemon-kr-navigation
+LW5CTRS,women-bottoms-78pants,"all-womens-bottoms, women-bottoms-leggings, women-activities-running, fabric-nulux-shop-all",lululemon-kr-navigation
+LW7BGHS,women-bottoms-shorts,"all-womens-bottoms, women-activities-running, fabric-nulux-shop-all",lululemon-kr-navigation
+LW7BJGS,women-bottoms-shorts,"all-womens-bottoms, women-activities-running, fabric-nulux-shop-all, women-collections-online-only",lululemon-kr-navigation
+LW9CS8S,women-accessories-scarveswraps,women-activities-running,lululemon-kr-navigation
+LW9CS9S,women-accessories-gloves,women-activities-running,lululemon-kr-navigation
+LW9CT4S,women-accessories-socks,women-activities-otc,lululemon-kr-navigation
+LW9CYLS,women-accessories-hatshairaccessories,women-activities-running,lululemon-kr-navigation
+LW9CYNS,women-accessories-gloves,women-activities-running,lululemon-kr-navigation
+LW9CZ5S,women-accessories-bags,women-activities-otc,lululemon-kr-navigation
+LW9CZ7S,women-accessories-bags,women-activities-otc,lululemon-kr-navigation
+prod10080057,women-bottoms-78pants,"all-womens-bottoms, women-bottoms-leggings, women-activities-running, fabric-nulux-shop-all",lululemon-kr-navigation
+prod9400153,women-bottoms-shorts,"all-womens-bottoms, women-activities-running, fabric-nulux-shop-all, women-collections-online-only",lululemon-kr-navigation
+prod9490366,women-tops-longsleeves,"all-womens-tops, women-activities-otc",lululemon-kr-navigation
+prod9490390,women-accessories-socks,women-activities-otc,lululemon-kr-navigation
+prod9750687,men-tops-long-sleeves,"all-mens-tops, men-activities-training",lululemon-kr-navigation
+prod9960663,women-accessories-hatshairaccessories,women-activities-otc,lululemon-kr-navigation
+prod9960669,women-accessories-bags,women-activities-otc,lululemon-kr-navigation
+prod9960711,men-tops-jacketshoodies,"all-mens-tops, men-activities-otc",lululemon-kr-navigation
